@@ -34,6 +34,9 @@
     "passport-local": "~0.1.6",
     "express-validator": "~0.3.2",
 	"express-mailer": "~0.2.0"
+  },
+  "bin": {
+    "tooltwist-auth" : "cli.js"
   }
   
 }

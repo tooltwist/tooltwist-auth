@@ -1,0 +1,447 @@
+<% layout(layoutPath) -%>
+
+
+<!-- HOME PAGE -->
+<%
+	if (user) {
+	} else {
+		user = {};
+	}
+%>
+
+
+<%
+	var PHILS_VERSION = false
+	if (PHILS_VERSION) {
+%>
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron head">
+      <div class="container">
+        <div class="col-md-8">
+		<!--
+          <h1>Bridge Real-World to Online commerce</h1>
+		-->
+          <h1>Hand-hold Real-World customers to your Online Store</h1>
+          <p>Direct real-world customers to your corner of the online world, bypassing Google and all those pesky, competing, online stores.</p>
+        </div>
+        <div class="col-md-4">
+          <h1> <!-- adds up margin to center elements vertically -->
+		  
+		  
+		  <!-- Template's form
+            <form class="" role="form">
+              <div class="form-group input-group-lg">
+                <input type="text" class="form-control" placeholder="Pick a store name">
+              </div>
+              <div class="form-group input-group-lg">
+                <input type="text" class="form-control" placeholder="Your email">
+              </div>
+              <div class="form-group input-group-lg">
+                <input type="text" class="form-control" placeholder="Create a password">
+              </div>
+              <div class="form-group">
+                <a class="btn btn-lg btn-success btn-block" href="#" role="button">Try ToolTwist for free &#187;</a>
+              </div>
+            </form>
+			-->
+			
+			
+			<form action="/register" method="post" class="" role="form">
+				<h1>Sign Up Today</h1>
+			
+<!--
+              <div class="form-group input-group-sm">
+					 <input type="text" class="form-control" placeholder="First name" name="firstName" value="<%= user.firstName || "" %>">
+				</div>
+              <div class="form-group input-group-sm">
+				    <input type="text" class="form-control" placeholder="Last name" name="lastName" value="<%= user.lastName || "" %>"/>
+				</div>
+-->
+              <div class="form-group input-group-sm">
+				    <input type="email" class="form-control" placeholder="Email" name="email" value="<%= user.email || "" %>"/>
+				</div>
+<!--
+              <div class="form-group input-group-sm">
+				    <input type="text" class="form-control" placeholder="Username" name="username" value="<%= user.username || "" %>"/>
+				</div>
+-->
+              <div class="form-group input-group-sm">
+				    <input type="password" class="form-control" placeholder="Password" name="password"/>
+				</div>
+              <div class="form-group input-group-sm">
+<!--
+				    <input type="password" class="form-control" placeholder="Retype password" name="passwordConfirmation"/><br/>
+-->
+				    <button class="btn">Register</button>
+<!--
+                <a class="btn btn-lg btn-success btn-block" href="#" role="button">Try ToolTwist for free &#187;</a>
+-->
+
+				</div>
+			</form>
+			
+			
+			
+			
+			
+          </h1>
+        </div>
+
+
+<%
+	} else { // !PHILS_VERSION
+%>
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron head">
+  <div class="container">
+    <div class="col-md-8 home-banner">
+	<!--
+      <h1>Bridge Real-World to Online commerce</h1>
+	  -->
+          <h1 style="text-align: center;">Software for Physical<br/> and Online Retailers<br/></h1>
+      <p>Direct real-world customers to your corner of the online world, bypassing Google and all those pesky, competing, online stores.</p>
+    </div>
+    <div class="col-md-4">
+		<h4>Sign Up Today</h4>
+      <h1> <!-- adds up margin to center elements vertically -->
+  
+  			<form action="/register" method="post" class="" role="form">
+          <div class="form-group input-group-md">
+              <input type="email" class="form-control" placeholder="Your email" name="email" value="<%= user.email || "" %>"/>
+          </div>
+          <div class="form-group input-group-md">
+              <input type="password" class="form-control" placeholder="Create a password" name="password"/>
+			  <!--
+			  <p class="text-muted">Use at least one lowercase letter, one numeral, and seven characters.</p>
+			  -->	
+          </div>
+          <div class="form-group input-group-md">
+              <button class="btn btn-lg btn-success btn-block">Try UseMe.tv for Free</button>
+          </div>
+  			</form>
+	
+      </h1>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Example row of columns -->
+  <div class="acenter">
+    <h1>Don't lose retail customers to online competitors.</h1>
+    <p class="lead">
+      Provide a <a href="#" class="text-primary">bridge</a> between your <a href="#" class="text-primary">physical retail</a> presence and your <a href="#" class="text-primary">online store</a>.
+    </p>
+  </div>
+  <br>
+  <div class="features">
+    <div class="row">
+      <div class="col-md-6 acenter">
+        <img src="/img/icon-retail.png" class="img-responsive">
+        <h4>Interactive Digital Displays</h4>
+        <p>
+          Retail video displays are great. <em>Interactive</em> Retail Displays are even better. <B><i>UseMe.tv</i></B> displays are better yet - customers use their phone as a remote control, then take their viewing history with them. Links take them directly to your site, bypassing Google and your ten thousand online competitors.
+        </p>
+        <p>
+          <a class="text-default" href="/product/useme.tv">Tell me more &raquo;</a>
+        </p>
+      </div>
+      <div class="col-md-6 acenter">
+        <img src="/img/icon-online.png" class="img-responsive">
+        <h4>Online Stores</h4>
+        <p>
+          ToolTwist provides Flexible, Innovative, Easy to set up eCommerce solutions that run from tiny through to world conquering. From cloud based to enterprise server farms. From desktop to mobile and tablets. All affordable. 
+        </p>
+        <p>
+          <a class="text-default" href="/product/online">Tell me more &raquo;</a>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 acenter">
+        <img src="/img/icon-publish.png" class="img-responsive">
+        <h4>Publishing</h4>
+        <p>
+          Update your retail displays and online store like the covers of a magazine, to suit product launches, seasons or simply to be interesting...
+          ToolTwist lets you create refreshing and relevant content without a team of IT gurus, and push it out to hundreds of locations. 
+          In stores, on walls, in windows, and online. 
+        </p>
+        <p>
+          <a class="text-default" href="/product/publisher">Tell me more &raquo;</a>
+        </p>
+      </div>
+      <div class="col-md-6 acenter">
+        <img src="/img/icon-analytics.png" class="img-responsive">
+        <h4>Analytics</h4>
+        <p>
+		  ToolTwist permits analytics to be collected and cross matched from shoppers using
+		  your interactive retail displays,
+		  then later to curious glances at images on their mobile phone, through to visits and purchases on
+		  your online store.
+        </p>
+		<p>
+          Experiment and measure success, then optimize your displays and online presence for maximum customer conversion.
+		</p>
+		
+		<!--
+        <p>
+          <a class="text-default" href="#">Tell me more &raquo;</a>
+        </p>
+		-->
+
+
+<%
+	} // !PHILS_VERSION
+%>
+      </div>
+    </div>
+  </div>
+</div> <!-- /container -->
+
+<br>
+
+<div class="color-swatches">
+  <div class="well"> <!-- color-swatch gray-lighter | bg-info -->
+    <!-- <hr> -->
+    <div class="container">
+
+      <div class="acenter">
+        <h1>You should know about ToolTwist if...</h1>
+		<!--
+        <p class="lead">
+          "ToolTwist isn't for everyone, but for those who need it it's a godsend"
+          <br>
+          - Nick Stanley, Sky Software
+        </p>
+		-->
+      </div>
+      <br>
+      <div class="table-responsive need-to-know panel panel-default">
+        <table class="table bg-white">
+          <tr>
+            <th class="valign-m acenter">
+              You are a Retailer
+            </th>
+            <td class="col_B">
+              You are worried about online stores stealing your customers.
+            </td>
+          </tr>
+          <!-- -->
+          <tr>
+            <th rowspan="4" class="valign-m acenter">
+              You run an Online Store
+            </th>
+          </tr>
+          <tr>
+            <td class="col_B">
+              You are losing customers to performance or stability problems.
+            </td>
+          </tr>
+          <tr>
+            <td class="col_B">
+              You wish to have a global (not just English) presence.
+            </td>
+          </tr>
+          <tr>
+            <td class="col_B">
+              You have complex requirements, beyond the scope of most packages.
+            </td>
+          </tr>
+          <!-- -->
+          <tr>
+            <th rowspan="4" class="valign-m acenter">
+              Developer
+            </th>
+          </tr>
+          <tr>
+            <td class="col_B">
+              I want to make my existing Retail Displays interactive.
+            </td>
+          </tr>
+          <tr>
+            <td class="col_B">
+              I want to add an eCommerce engine behind an existing application.
+            </td>
+          </tr>
+          <tr>
+            <td class="col_B">
+              I need a CMS that is more like a development environment than a CMS, but is still usable by non-tech-people.
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    </div> <!-- /container -->
+    <br>
+    <!-- <hr> -->
+  </div>
+</div>
+
+<br>
+
+<div class="container">
+
+  <div class="acenter">
+    <h1>Frequently Asked Questions</h1>
+    <p class="lead">
+      ToolTwist was designed to be Flexible at every level.
+    </p>
+  </div>
+  <div class="clearfix panel panel-default">
+    <div class="col-md-6">
+      <div>
+        <h4>I have a web development team. Can they use ToolTwist?</h4>
+        <p>
+           Sure can. They can build new web sites using ToolTwist, or load existing websites into ToolTwist. They can even convert their existing work into ToolTwist widgets so non-technical users can re-use cool functionality on their new pages.
+        </p>
+      </div>
+      <div>
+        <h4>I'll need hundreds of interactive displays. How can I keep them under control?</h4>
+        <p>
+           ToolTwist has a workflow for approving changes to web pages and retail displays, and a publishing system for deploying approved changes into the field. Combined with ToolTwist's analytics, you can quickly try out changes to your displays, then selectively push them out to your stores and monitor the result. This fast-feedback allows you to quickly tune your marketing efforts.
+        </p>
+      </div>
+      <div>
+        <h4>Can you help me go global?</h4>
+        <p>
+           You bet we can! ToolTwist Designer and Publishing is ideal for creating dozens of versions of the same website or interactive display, each localized for a different countries. Whether you need simple i18n language translations, or entirely new content and different site maps, ToolTwist allows you to reuse the logic of your website. The best news, is that websites can be created by non-technical people in each country, resulting in content that is suited to the customers and culture of each region.
+        </p>
+      </div>
+      <div>
+        <h4>Can you help with white-labelling websites and retail displays?</h4>
+        <p>
+           Certainly. All ToolTwist displays and websites are "multi-tenant" by default. This means that the appearance of what is displayed is altered according to the domain name (URL), location or other criteria. Simple configuration changes can switch color schemes, logos, or even entire pages and site maps.
+        </p>
+      </div>
+      <div>
+        <h4>How effective are ToolTwist Retail Displays?</h4>
+        <p>
+           We're not going to pretend ToolTwist will transform your business overnight. Your level of success with ToolTwist will largely depend on how effective you are at enticing customers to interact with your displays. Initially you may need to encourage customers to give them a try, via the content you display or through sales staff encouragement. The best way will vary depending upon your customer demographics and the type of products you sell. However we do know that each customers using the displays, encourages other customers to give them a try, and in each case customers who use displays become significantly more likely to become customers of your online store.
+        </p>
+      </div>
+      <div>
+        <h4>Can I integrate with existing systems?</h4>
+        <p>
+           At the core of ToolTwist is a transaction routing engine, designed to integrate with legacy systems, whether they be provisioning, ERP, CRM, or business specific systems. ToolTwist is 100% designed to be extensible, allowing logic to be easily added and integration with virtually any external system.
+        </p>
+      </div>
+      <div>
+        <h4>How do I encourage customers to use my Interactive Displays?</h4>
+        <p>
+           Initially customers might not be sure exactly what your displays do. If you provide interesting content and information, then one person using the display can draw other people's curiosity. The trick is to find a balance between interesting or novel media, and obvious sales pitch. In some cases you might diplay obvious advertisements. In others use the display as an unobtrusive information display. What works best will depends a lot on your customer demographics. In any case, if the display is large enough and interesting enough, then one user interacting with your sales display will arouse the curiosity of other customers.
+        </p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div>
+        <h4>I already have retail displays. Can I convert them to ToolTwist Interactive Displays?</h4>
+        <p>
+           Yes! ToolTwist provides a Javascript API that can be included into any HTML page in minutes. Usually a dozen lines of code or so is enough to convert your static sales display into an interactive display. The ToolTwist cloud servers look after the communication with the customer's mobile device, linking to your website, and every step through to analytics.
+        </p>
+      </div>
+      <div>
+        <h4>Can I use the ToolTwist online store without the rest of ToolTwist?</h4>
+        <p>
+           Sure. Use whichever parts of ToolTwist you need. If you
+        </p>
+      </div>
+      <div>
+        <h4>I only need a simple online store. Can you help me?</h4>
+        <p>
+           ToolTwist's cloud based store might be right for you. Simply sign up, load your products, and you're in business.
+        </p>
+      </div>
+      <div>
+        <h4>I need an Enterprise Level online store</h4>
+        <p>
+           A million products? A millions customers? Need legacy system integration? Thousands of landing and campaign pages? No Problem, these are all business as usual for ToolTwist. Give us a call to discuss your requirements (we won't harass you).
+        </p>
+      </div>
+      <div>
+        <h4>Can I publish pages without IT involvement?</h4>
+        <p>
+           ToolTwist Designer is a tool that allows non-technical people to create and change web pages, to suit the season product launches, or marketing campaigns. An approval workflow allows the work to checked by authorized individuals in your organisation, and marked for release to production.
+        </p>
+      </div>
+      <div>
+        <h4>I already have an online store, but I'd like to use the ToolTwist back-end...</h4>
+        <p>
+           If you need to add super high performance, or easy integration with ToolTwist's retail displays, you might want to use TEA (ToolTwist eCommerce Accellerator). This is a hugely scaleable cloud based service designed to be linked into existing systems. Load products or place orders using the forward facing API, or process payments, and shipping, or pass orders through to your provisioning system using the rear facing API.
+        </p>
+      </div>
+      <div>
+        <h4>My programmers don't know ToolTwist</h4>
+        <p>
+           No worries, they can learn ToolTwist <i>very</i> quickly, usually in a day or two. ToolTwist uses code generators to generate code in a variety of programming languages. The Mustache templating language allows developers to tweak ToolTwist to generate whatever code they like. For more information see here ZZZZ.
+        </p>
+      </div>
+      <div>
+        <h4>Is ToolTwist suitable for outsourced work?</h4>
+        <p>
+           ToolTwist is an ideal environment for organizations that wish to outsource. Both website and sales displays are designed in ToolTwist as individual components, that may be developed across geographys and then combined using an approval workflow that releases certified work to production. This componentized and fire-walled approach allows multple teams to create functional and creative content, on different release cycles, with minimum risk of one team corrupting the work of other teams. It also simplifies communication and provides clear acceptance points for remotely located teams. ToolTwist may be used by your existing outsourcing partner or you may wish to use Twist Resources, our Philippines development group.
+        </p>
+      </div>
+    </div>
+  </div>
+    
+  <div class="acenter">
+    <div class="marketing-header">
+      
+      <br>
+
+      <div class="">
+        <div class="well">
+          <div class="clearfix">
+            <h1>ToolTwist For Developers</h1>
+            <p class="lead">
+               Open and extensible APIs allow you to Pick and Choose the bits you Need.
+            </p>
+            <br>
+          </div>
+          <div class="clearfix"></div>
+          <div class="col-md-4">
+            <img src="/img/icon-api.png" class="img-responsive">
+            <h4>ToolTwist Wall API</h4>
+            <p>
+               Any HTML-based interactive displays can be turned into an interactive display in just a few minutes.
+            </p>
+          </div>
+          <div class="col-md-4">
+            <img src="/img/icon-display.png" class="img-responsive">
+            <h4>Adding business-specific logic to ToolTwist websites and sales displays</h4>
+            <p>
+               ToolTwist isn't just used for eCommerce sites. You won't believe how extensible it is...
+            </p>
+          </div>
+          <div class="col-md-4">
+            <img src="/img/icon-tea.png" class="img-responsive">
+            <h4>TEA Integration</h4>
+            <p>
+               ToolTwist Ecommerce Accellerator provides a super-high performance eCommerce back end. Integrate it to turbo-charge your existing eCommerce site, or any other website that needs shopping cart or eCommerce functionality.
+            </p>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <br>
+        <br>
+      </div>
+    </div> <!-- faq -->
+  </div>
+
+</div> <!-- /container -->
+
+<br>
+
+<div class="marketing-section jumbotron acenter footer">
+  <div class="container">
+    <h2>I need a LOT of ToolTwist.</h2>
+    <p class="lead">
+      Let us help you roll out a custom solution.
+    </p>
+    <p>
+      <a class="btn btn-success btn-lg" role="button">Learn more about Enterprise</a>
+    </p>
+  </div>
+</div>
+
+

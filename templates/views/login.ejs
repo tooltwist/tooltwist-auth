@@ -1,0 +1,21 @@
+<% layout(layoutPathLogin) -%>
+
+<div class="container">
+  <form class="form-signin" action="/login" method="post" role="form">
+    <input type="hidden" name="postAuthDestination" value="<%=postAuthDestination%>">
+
+    <h1 class="acenter">
+      <a href="/" alt="ToolTwist" title="ToolTwist">
+        <img src="img/ttlogo.png">
+        ToolTwist
+      </a>
+    </h1>
+
+    <input type="text" class="form-control" placeholder="Email" name="username" required autofocus>
+    <input type="password" class="form-control" placeholder="Password" name="password" required>
+    
+    <button class="btn btn-lg btn-success btn-block">Sign In</button>
+    <br>
+    <a href="/request_password_reset">Forgot your password?</a>
+  </form>
+</div>
