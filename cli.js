@@ -51,19 +51,40 @@ function newProject(name) {
 	mkdirp.sync(name);
 	mkdirp.sync(name + '/controllers');
 	mkdirp.sync(name + '/views');
+	mkdirp.sync(name + '/views/shared');
 	mkdirp.sync(name + '/views/tooltwist-auth');
+	mkdirp.sync(name + '/views/tooltwist-auth/example');
 	mkdirp.sync(name + '/public');
 	mkdirp.sync(name + '/public/css');
 	mkdirp.sync(name + '/public/img');
 	mkdirp.sync(name + '/public/js');
 	
+	// Create example controller
+	copy("controllers/example.js", name + '/controllers/example.js');
+	copy("views/example/privatePage.ejs", name + '/views/tooltwist-auth/example/privatePage.ejs');
+	copy("views/example/publicPage.ejs", name + '/views/tooltwist-auth/example/publicPage.ejs');
+	
+	// Layouts
+	copy("views/shared/alert_messages.ejs", name + '/views/shared/alert_messages.ejs');
+	copy("views/shared/layout.ejs", name + '/views/shared/layout.ejs');
+	copy("views/shared/footer.ejs", name + '/views/shared/footer.ejs');
+	copy("views/shared/navigation.ejs", name + '/views/shared/navigation.ejs');
+	
 	// Create the default views
-	var to = name + '/views/tooltwist-auth/edit.ejs';
+	var to = name + '/views/tooltwist-auth/account.ejs';
 	if ( !fs.existsSync(to)) {
-		var from = __dirname + "/templates/views/edit.ejs"
+		var from = __dirname + "/templates/views/account.ejs"
 		var output = fs.readFileSync(from, "utf8");
 		fs.writeFileSync(to, output, { encoding: 'utf8' });
 	}
+	var to = name + '/views/tooltwist-auth/error_500.ejs';
+	if ( !fs.existsSync(to)) {
+		var from = __dirname + "/templates/views/error_500.ejs"
+		var output = fs.readFileSync(from, "utf8");
+		fs.writeFileSync(to, output, { encoding: 'utf8' });
+	}
+	copy('views/home.ejs', name + '/views/tooltwist-auth/home.ejs');
+	copy('views/home_signedIn.ejs', name + '/views/tooltwist-auth/home_signedIn.ejs');
 	var to = name + '/views/tooltwist-auth/login.ejs';
 	if ( !fs.existsSync(to)) {
 		var from = __dirname + "/templates/views/login.ejs"
@@ -82,9 +103,9 @@ function newProject(name) {
 		var output = fs.readFileSync(from, "utf8");
 		fs.writeFileSync(to, output, { encoding: 'utf8' });
 	}
-	var to = name + '/views/tooltwist-auth/reset_password.ejs';
+	var to = name + '/views/tooltwist-auth/request_password_reset.ejs';
 	if ( !fs.existsSync(to)) {
-		var from = __dirname + "/templates/views/reset_password.ejs"
+		var from = __dirname + "/templates/views/request_password_reset.ejs"
 		var output = fs.readFileSync(from, "utf8");
 		fs.writeFileSync(to, output, { encoding: 'utf8' });
 	}
@@ -94,19 +115,6 @@ function newProject(name) {
 		var output = fs.readFileSync(from, "utf8");
 		fs.writeFileSync(to, output, { encoding: 'utf8' });
 	}
-	var to = name + '/views/tooltwist-auth/500.ejs';
-	if ( !fs.existsSync(to)) {
-		var from = __dirname + "/templates/views/500.ejs"
-		var output = fs.readFileSync(from, "utf8");
-		fs.writeFileSync(to, output, { encoding: 'utf8' });
-	}
-	var to = name + '/views/index.ejs';
-	if ( !fs.existsSync(to)) {
-		var from = __dirname + "/templates/views/index.ejs"
-		var output = fs.readFileSync(from, "utf8");
-		fs.writeFileSync(to, output, { encoding: 'utf8' });
-	}
-	
 	
 	// Create the initial project files
 	var to = name + '/app.js';
@@ -119,6 +127,15 @@ function newProject(name) {
 	if ( !fs.existsSync(to)) {
 		var from = __dirname + "/templates/package.json"
 		var output = fs.readFileSync(from, "utf8");
+		fs.writeFileSync(to, output, { encoding: 'utf8' });
+	}
+	copy('config.js.example', name + '/config.js.example');
+}
+
+function copy(from, to) {
+	if ( !fs.existsSync(to)) {
+		console.log('  ' + to);
+		var output = fs.readFileSync(__dirname + '/templates/' + from, "utf8");
 		fs.writeFileSync(to, output, { encoding: 'utf8' });
 	}
 }

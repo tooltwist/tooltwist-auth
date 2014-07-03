@@ -1,0 +1,50 @@
+// This is just a sample.  This should be in your .gitignore file as it may contain sensitive information (password, secret keys, etc.).
+
+/*
+ *	Config options for the Application.
+ */
+exports.server = {
+	PORT : 4000
+};
+
+/*
+ *	Configuration options for tooltwist-auth.
+ */
+exports.auth = {
+	
+	// templates
+	templates : {
+	/*
+		home : 'welcome/index',
+		home_signedIn : 'users/dashboard',
+		login : 'auth-local/login',
+		register : 'auth-local/register',
+		account : 'auth-local/account',
+		request_password_reset : 'auth-local/request_password_reset',
+		password_reset : 'auth-local/password_reset',
+		user_list : 'auth-local/user_list',
+		error_500 : 'auth-local/error_500',
+	*/
+	},
+		
+	// What home page is shown when the user is already signed in.
+	/*
+	default_url_when_signedIn : '/home'
+	*/
+};
+
+/*
+ *	Configuration options for Mandrill email gateway.
+ */
+exports.mandrill = {
+  "development" : {
+    MANDRILL_USERNAME : 'fred.snurgs@gmail.com',
+    MANDRILL_API_KEY : 'xxxxxxxxxxxx-xxxxxxxxx'
+  },
+  "production" : {
+    // Set these env variables in your hosted environment
+    MANDRILL_USERNAME : process.env.MANDRILL_USERNAME,
+    MANDRILL_API_KEY : process.env.MANDRILL_API_KEY
+  }
+}
+

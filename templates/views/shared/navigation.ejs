@@ -1,0 +1,251 @@
+
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+  
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">ToolTwist</a>
+
+	  	<!-- Login button, only when the menu collapses -->
+		<!-- See http://getbootstrap.com/css/#responsive-utilities -->
+    <!--
+		<div class="visible-xs pull-right">
+			<button type="button" class="navbar-btn btn btn-default">
+        <a href="/login">Sign in &nbsp;<span class="glyphicon glyphicon-log-in"></span></a>
+      </button>
+      &nbsp;&nbsp;
+		</div>
+    -->
+    </div>
+
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+	  
+		
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Products<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/product/useme.tv">UseMe.tv - <i>Interactive Retail Displays</i></a></li>
+            <li><a href="/product/online">ToolTwist Online - <i>eCommerce Solutions</i></a></li>
+			<!--
+            <li><a href="/product/designer">Designer (Content Creation)</a></li>
+			-->
+            <li><a href="/product/publish">Publish - <i>Content Creation and Deployment</i></a></li>
+			<!--
+            <li><a href="/product/analytics">Analytics (Monitoring and Measurement)</a></li>
+            <li><a href="/product/workbench">Workbench (Software Development)</a></li>
+			-->
+			<!--
+            <li class="divider"></li>
+			-->
+          </ul>
+        </li>
+		
+		
+		
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Case Studies<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+          <li><a href="/casestudy/pcm">MacMall - <i>High Performance eCommerce</i></a></li>
+          <li><a href="/casestudy/rpdata">RPData - <i>Repurposing and Reuse</i></a></li>
+		  <!--
+          <li><a href="/casestudy/trackmotion">Track Motion - Engineering and Analysis</a></li>
+		  -->
+          <li><a href="/casestudy/skysoftware">Sky Software - <i>Mass Internationalization</i></a></li>
+          </ul>
+        </li>
+		
+
+        <li><a href="/aboutUs">About Us</a></li>
+		
+		
+		
+      </ul>
+	  
+	  <!--
+      <form class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+	  -->
+	  
+	  
+	  
+	  
+	  
+	  
+      <ul class="nav navbar-nav navbar-right">
+	  
+	  
+      <% if(userIsAuthenticated){ %>
+        
+	  <%
+	  if (1==2){
+	  %>
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tutorials <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="/documentation/api/useme">UseMe.tv API for Retail displays</a></li>
+		  <!--
+          <li class="divider"></li>
+          <li><a href="/tutorials/tea">Tutorials for ToolTwist eCommerce Accelerator (TEA)</a></li>
+		  -->
+		  <!--
+          <li><a href="/documentation/api/tea">TEA</a></li>
+          <li><a href="/documentation/tutorial/designer">Designer</a></li>
+          <li><a href="/documentation/tutorial/publisher">Publisher</a></li>
+		  -->
+		  <!--
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+          <li class="divider"></li>
+          <li><a href="#">One more separated link</a></li>
+		  -->
+        </ul>
+      </li>
+	  <%
+		  } // 1==2
+	  %>
+	  
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">API Documentation <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="/api/retailremote">API for Useme.tv</a></li>
+
+		  <!--
+          <li class="divider"></li>
+          <li><a href="/api/tea">TEA API</a></li>
+          <li><a href="/api/tooltwist">ToolTwist</a></li>
+          <li class="divider"></li>
+		  -->
+        </ul>
+      </li>
+      
+      <li>
+        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">
+          <span class="glyphicon glyphicon-user">&nbsp;<%= user.firstName %>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="/documentation">
+              <span class="glyphicon glyphicon-dashboard"></span>&nbsp;Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="/account">
+              <span class="glyphicon glyphicon-cog"></span>&nbsp;Account
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="/logout">
+              <span class="glyphicon glyphicon-log-out"></span>&nbsp;Log out
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <% } else { %>
+	  	<!--
+        <li><a href="/register">Register</a></li>  
+		-->
+        <li>
+          <a href="/login">Sign in &nbsp;<span class="glyphicon glyphicon-log-in"></span></a>
+        </li>  
+      <% } %>
+	  
+	  
+	  
+        
+      </ul>
+    </div><!-- /.navbar-collapse -->	
+	
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
+<%
+	if (1==2) {
+%>
+
+<!-- Original from here down -->
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+  
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+		<!--
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  -->
+      <a class="navbar-brand" href="#">ToolTwist1</a>
+    </div>
+
+  <div class="navbar-header">
+    <a class="navbar-brand" href="/">NodeDemo</a>
+    <ul class="nav navbar-nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products">Products</a></li>
+	  
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Case Studies <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+		  <!--
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+          <li class="divider"></li>
+          <li><a href="#">One more separated link</a></li>
+		  -->
+        </ul>
+      </li>
+	  
+      <% if(userIsAuthenticated){ %>
+        <li><a href="/account">Account</a></li>
+        <li><a href="/documentation">Documentation</a></li>
+
+	  
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">RetailRemote API</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Tutorials for ToolTwist eCommerce Accelerator (TEA)</a></li>
+          <li><a href="#">TEA API</a></li>
+          <li><a href="#">Designer</a></li>
+          <li><a href="#">Publisher</a></li>
+		  <!--
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+          <li class="divider"></li>
+          <li><a href="#">One more separated link</a></li>
+		  -->
+        </ul>
+      </li>
+
+      <% } else { %>
+        <li><a href="/register">Register</a></li>  
+      <% } %>
+    </ul>
+  </div>
+  </div><!-- /.container-fluid -->
+</nav>
+
+<%
+} // 1 == 2
+%>
