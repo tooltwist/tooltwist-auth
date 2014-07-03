@@ -15,13 +15,13 @@ var DEBUGGING = true;
 var _env = null;
 var _app = null;
 var template_home = 'tooltwist-auth/home';
-var template_home_signedIn = 'tooltwist-auth/dashboard';
+var template_home_signedIn = 'tooltwist-auth/home_signedIn';
 var template_login = 'tooltwist-auth/login';
 var template_register = 'tooltwist-auth/register';
 var template_account = 'tooltwist-auth/account';
 var template_request_password_reset = 'tooltwist-auth/request_password_reset';
 var template_password_reset = 'tooltwist-auth/password_reset';
-var template_error_500 = 'tooltwist-auth/500'
+var template_error_500 = 'tooltwist-auth/error_500'
 
 var default_url_when_signedIn = '/dashboard';
 
@@ -114,14 +114,14 @@ exports.initialize = function(dir, express, app, config) {
 	}
 	
 
-	// Set variables to be avaiable for the views.
+	// Set variables to be available for the views.
 	app.use(function(req, res, next){
 	  res.locals.userIsAuthenticated = req.isAuthenticated(); // check for user authentication
 	  res.locals.user = req.user; // make user available in all views
 	  res.locals.errorMessages = req.flash('error'); // make error alert messages available in all views
 	  res.locals.successMessages = req.flash('success'); // make success messages available in all views
 	  app.locals.layoutPath = "../shared/layout";
-	  app.locals.layoutPathLogin = "../shared/login";
+	  app.locals.layoutPathLogin = "../shared/layout-login";
 	  next();
 	});
 	
@@ -148,12 +148,13 @@ exports.initialize = function(dir, express, app, config) {
 	// Error Handling
 	if (_env === 'development') {
 
-		// Standard error handler
+		// Standard error handler, which shows details of the error.
 		app.use(express.errorHandler());
 	} else {
 
-		// Display our own page
+		// Production - display our own page, which hides details of the error.
 		app.use(function(err, req, res, next) {
+			// 500 is 'Internal Server Error'
 			res.render(template_error_500, { status: 500 });
 		});
 	}
@@ -184,6 +185,7 @@ exports.addRoutes = function(app){
 	
 	// Request password reset
 	app.get('/request_password_reset', this.requireLevel0, function(req, res){
+		//console.log('Requesting Password Reset')		
 		res.render(template_request_password_reset);
 	});
 	app.post('/request_password_reset', this.requireLevel0, this.generate_password_reset);
@@ -201,9 +203,19 @@ exports.addRoutes = function(app){
 	app.get('/account', this.requireLevel1, this.account);
 	app.post('/account', this.requireLevel1, this.accountValidations, this.update);
 	
-	
+	// Sign out
 	app.get('/logout', this.logout);
 
+	// Example pages
+	app.get('/example/publicPage', function(req, res){
+		res.render('example/publicPage');
+	});
+	app.get('/example/privatePage', this.requireLevel2, function(req, res){
+		res.render('example/privatePage');
+	});
+	app.get('/example/aboutUs', function(req, res){
+		res.render('example/aboutUs');
+	});
 
 
 	if (DEBUGGING) {
@@ -224,7 +236,9 @@ exports.start = function(callback){
 	// This must happen after all other routes have been added.
 	_app.all('*', function(req, res){
 	  req.flash('error', "That doesn't seem to be a page.");
-	  res.redirect('/');
+	  res.status(404);
+	  res.render(template_error_500, { status: 404 });
+//	  res.redirect('/');
 	});
 	
 	// Open the database

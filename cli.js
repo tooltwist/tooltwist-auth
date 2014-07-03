@@ -51,24 +51,50 @@ function newProject(name) {
 	mkdirp.sync(name);
 	mkdirp.sync(name + '/controllers');
 	mkdirp.sync(name + '/views');
+	mkdirp.sync(name + '/views/example');
 	mkdirp.sync(name + '/views/shared');
 	mkdirp.sync(name + '/views/tooltwist-auth');
-	mkdirp.sync(name + '/views/tooltwist-auth/example');
 	mkdirp.sync(name + '/public');
 	mkdirp.sync(name + '/public/css');
 	mkdirp.sync(name + '/public/img');
 	mkdirp.sync(name + '/public/js');
+
+
+	function copy(from, to) {
+		if ( !fs.existsSync(to)) {
+			console.log('  ' + to);
+			var output = fs.readFileSync(__dirname + '/templates/' + from);
+			fs.writeFileSync(to, output, { encoding: 'utf8' });
+		}
+	}
 	
-	// Create example controller
+	// Create example controller and views
 	copy("controllers/example.js", name + '/controllers/example.js');
-	copy("views/example/privatePage.ejs", name + '/views/tooltwist-auth/example/privatePage.ejs');
-	copy("views/example/publicPage.ejs", name + '/views/tooltwist-auth/example/publicPage.ejs');
+	copy("views/example/privatePage.ejs", name + '/views/example/privatePage.ejs');
+	copy("views/example/publicPage.ejs", name + '/views/example/publicPage.ejs');
+	copy("views/example/aboutUs.ejs", name + '/views/example/aboutUs.ejs');
 	
 	// Layouts
 	copy("views/shared/alert_messages.ejs", name + '/views/shared/alert_messages.ejs');
 	copy("views/shared/layout.ejs", name + '/views/shared/layout.ejs');
 	copy("views/shared/footer.ejs", name + '/views/shared/footer.ejs');
+	copy("views/shared/layout-login.ejs", name + '/views/shared/layout-login.ejs');
 	copy("views/shared/navigation.ejs", name + '/views/shared/navigation.ejs');
+	
+	// CSS
+	copy("public/css/main.css", name + '/public/css/main.css');
+	
+	// Javascript
+	copy("public/js/main.js", name + '/public/js/main.js');
+	
+	// Images
+	copy("public/img/bg1.jpg", name + '/public/img/bg1.jpg');
+	copy("public/img/bg2.png", name + '/public/img/bg2.png');
+	copy("public/img/ttlogo.png", name + '/public/img/ttlogo.png');
+	copy("public/img/ttlogo-small.png", name + '/public/img/ttlogo-small.png');
+	copy("public/img/generic-icon.png", name + '/public/img/generic-icon.png');
+	copy("public/img/icon-check.png", name + '/public/img/icon-check.png');
+	copy("public/img/favicon.ico", name + '/public/img/favicon.ico');
 	
 	// Create the default views
 	var to = name + '/views/tooltwist-auth/account.ejs';
@@ -130,14 +156,6 @@ function newProject(name) {
 		fs.writeFileSync(to, output, { encoding: 'utf8' });
 	}
 	copy('config.js.example', name + '/config.js.example');
-}
-
-function copy(from, to) {
-	if ( !fs.existsSync(to)) {
-		console.log('  ' + to);
-		var output = fs.readFileSync(__dirname + '/templates/' + from, "utf8");
-		fs.writeFileSync(to, output, { encoding: 'utf8' });
-	}
 }
 
 

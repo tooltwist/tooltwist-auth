@@ -1,46 +1,11 @@
 <% layout(layoutPath) -%>
-<!--
-<h1>Private Page</h1>
-<form action="/account" method="post">
-  <div>
-    <label>First Name:</label>
-    <input type="text" name="firstName" value="<%= user.firstName ? user.firstName : '' %>"/>
-  </div>
-  <div>
-    <label>Last Name:</label>
-    <input type="text" name="lastName" value="<%= (user.lastName) ? user.lastName : '' %>"/>
-  </div>
-  <div>
-    <label>Email:</label>
-    <input type="email" name="email" value="<%= user.email %>"/>
-  </div>
-  <div>
-    <label>Username:</label>
-    <input type="text" name="username" value="<%= user.username %>"/>
-  </div>
-  <div>
-    <label>Current Password:</label>
-    <input type="password" name="currentPassword"/><br/>
-  </div>
-  <div>
-    <label>New Password:</label>
-    <input type="password" name="password"/>
-  </div>
-  <div>
-    <label>Retype New Password:</label>
-    <input type="password" name="passwordConfirmation"/>
-  </div>
-    <button class="btn">Register</button>
-  </fieldset>
-</form>
--->
 
 <%
 	if (user){} else user = {};
 %>
 
 <div class="container pages">
-  <h2>Account Settings</h2>
+  <h2>Private Page</h2>
   <form action="/account" method="post" role="form">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -54,85 +19,31 @@
 	var lastName = ''
 	if (user && user.lastName)
 		lastName = user.lastName;
-		
-		var termsAccepted = (user && user.termsAccepted_v1);
-		var noDeengineer = (user && user.noDeengineer_v1) ? 'checked' : '';
-		var acceptedTerms = termsAccepted && noDeengineer;
-		//acceptedTerms = false;
 %>
       <div class="panel-body">
-        <div class="col-md-6">
+	      <div class="col-md-7">
+			  <p>This page can only be seen while the user is Signed In.</p>
+		  </div>
+        <div class="col-md-7">
           <div class="form-group">
             <label>First Name:</label>
             <input type="text" class="form-control" name="firstName" value="<%= firstName %>"/>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-7">
           <div class="form-group">
             <label>Last Name:</label>
             <input type="text" class="form-control" name="lastName" value="<%= lastName %>"/>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-7">
           <div class="form-group">
             <label>Email:</label>
             <input type="text" class="form-control" name="username" value="<%= user.username %>" readonly="true"/>
           </div>
         </div>
       </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Terms and Conditions</h3>
-      </div>
-      <div class="panel-body">
-        <div class="col-md-12">
-          <%
-            var show_tandc = true; //!(termsAccepted && noDeengineer);
-            if (show_tandc) {
-          %>
-
-          <div class="account-terms-and-conditions">
-            <textarea class="form-control" rows="<%=termsAccepted?'3':'15'%>" readonly="readonly">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem. Investigationes demonstraverunt lectores legere me lius quod ii legunt saepius. Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.
-            </textarea>
-          </div>
-
-          <%
-            } // show_tandc
-          %>
-          <br>
-          <p>
-            <input type="checkbox" name="termsAccepted_v1" <%=termsAccepted?'checked':''%> <%=acceptedTerms?'disabled':''%>> I agree to these Terms and Conditions.
-          <p>
-          <input type="checkbox" name="noDeengineer_v1" <%=noDeengineer?'checked':''%> <%=acceptedTerms?'disabled':''%>> I will not de-engineer this software.
-        </div>
-      </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">Change Password</h3>
-      </div>
-      <div class="panel-body">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Current Password:</label>
-            <input type="password" class="form-control" name="currentPassword"/>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>New Password:</label>
-            <input type="password" class="form-control" name="password"/>
-          </div>
-          <div class="form-group">
-            <label>Retype New Password:</label>
-            <input type="password" class="form-control" name="passwordConfirmation"/>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button class="btn">Update</button>
-	
+    </div>	
 
   </form>
 </div>

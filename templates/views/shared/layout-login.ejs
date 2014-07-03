@@ -1,25 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  
-	<!-- KissMetrics -->
-	<script type="text/javascript">
-	/*
-	var _kmq = _kmq || [];
-	var _kmk = _kmk || 'a34b79e5d1f81629b4f6069b9cedd0fed8affe95';
-	function _kms(u){
-	  setTimeout(function(){
-	    var d = document, f = d.getElementsByTagName('script')[0],
-	    s = d.createElement('script');
-	    s.type = 'text/javascript'; s.async = true; s.src = u;
-	    f.parentNode.insertBefore(s, f);
-	  }, 1);
-	}
-	_kms('//i.kissmetrics.com/i.js');
-	_kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
-	*/
-	</script>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>ToolTwist · Direct customers to your corner of the Online World.</title>
@@ -35,7 +16,7 @@
     <style>
         body {
             padding-top: 50px;
-            /*padding-bottom: 107px;*/
+            padding-bottom: 20px;
         }
     </style>
     <link rel="stylesheet" href="/css/main.css">
@@ -44,18 +25,12 @@
 	-->
   </head>
   <body>
-    
     <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     
-    <% include navigation.ejs %>
-
     <% include alert_messages.ejs %>
-
     <%- body -%>
-    
-    <% include footer.ejs %>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -68,5 +43,6 @@
     <script src="/bootstrap-3.1.1/bootstrap.min.js"></script>
 	-->
     <script src="/js/main.js"></script>
+	
   </body>
 </html>
