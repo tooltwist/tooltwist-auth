@@ -38,7 +38,7 @@ var ops = stdio.getopt({
 });
 
 function newProject(name) {
-	console.log('newProject ' + name);
+	//console.log('newProject ' + name);
 	
 	// Check the directory doesn't already exist
 	var dir = './' + name;
@@ -62,7 +62,7 @@ function newProject(name) {
 
 	function copy(from, to) {
 		if ( !fs.existsSync(to)) {
-			console.log('  ' + to);
+			//console.log('  ' + to);
 			var output = fs.readFileSync(__dirname + '/templates/' + from);
 			fs.writeFileSync(to, output, { encoding: 'utf8' });
 		}
@@ -103,6 +103,8 @@ function newProject(name) {
 		var output = fs.readFileSync(from, "utf8");
 		fs.writeFileSync(to, output, { encoding: 'utf8' });
 	}
+	copy('views/contact.ejs', name + '/views/tooltwist-auth/contact.ejs');
+	copy('views/contactThanks.ejs', name + '/views/tooltwist-auth/contactThanks.ejs');
 	var to = name + '/views/tooltwist-auth/error_500.ejs';
 	if ( !fs.existsSync(to)) {
 		var from = __dirname + "/templates/views/error_500.ejs"
@@ -156,6 +158,7 @@ function newProject(name) {
 		fs.writeFileSync(to, output, { encoding: 'utf8' });
 	}
 	copy('config.js.example', name + '/config.js.example');
+	copy('config.js.example', name + '/config.js');
 }
 
 
@@ -163,11 +166,12 @@ function newProject(name) {
 (function main() {
 	
 	// Check the command line options
-	console.log('ops=', ops)
+	//console.log('ops=', ops)
 	if (ops.args && ops.args[0] == 'init') {
-		console.log('\nInitialise project ' + ops.args[1]);
+		//console.log('\nInitialise project ' + ops.args[1]);
 		var projectName = ops.args[1];
 		newProject(projectName);
+		console.log('Project ready.')
 	}
 
 })(); // end of main()

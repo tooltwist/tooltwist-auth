@@ -28,8 +28,6 @@ app.get('/example/privatePage', auth.requireLevel2, example.privatePage);
 
 // Start Server w/ DB Connection
 auth.start(function(){
-	
-	console.log('ALL GOOD HERE.')
-	
+	// Server started
 });
 

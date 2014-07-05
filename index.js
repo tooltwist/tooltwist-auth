@@ -9,6 +9,8 @@ var mongoose = require('mongoose')
 	, expressValidator = require('express-validator')
     , mailer = require('express-mailer')
 	, LocalStrategy = require('passport-local').Strategy
+	, geoip = require('geoip-lite')
+	, time = require('time')
 ;
 
 var DEBUGGING = true;
@@ -22,6 +24,9 @@ var template_account = 'tooltwist-auth/account';
 var template_request_password_reset = 'tooltwist-auth/request_password_reset';
 var template_password_reset = 'tooltwist-auth/password_reset';
 var template_error_500 = 'tooltwist-auth/error_500'
+var template_contact = 'tooltwist-auth/contact'
+var template_mailer_contact = 'tooltwist-auth/mailer-contact'
+var template_contactThanks = 'tooltwist-auth/contactThanks'
 
 var default_url_when_signedIn = '/dashboard';
 
@@ -30,11 +35,11 @@ var default_url_when_signedIn = '/dashboard';
 exports.initialize = function(dir, express, app, config) {
 	_env = app.get('env'); // will be 'development' or 'production'
 	_app = app;
+	//console.log("CONFIG=", config)
 	
 	// Load the configuration.
 	if ( !config) {
 		// Load config from file
-		console.log('Loading config')
 	    config = require(dir + '/config');
 	}
 
@@ -55,7 +60,11 @@ exports.initialize = function(dir, express, app, config) {
 		template_password_reset = config.auth.templates.password_reset;
 	if (config.auth.templates.error_500)
 		template_error_500 = config.auth.templates.error_500;
-	
+	if (config.auth.templates.contact)
+		template_contact = config.auth.templates.contact;
+	if (config.auth.templates.contactThanks)
+		template_contactThanks = config.auth.templates.contactThanks;
+
 	// Allow override of the url used for the home page, when signed in.
 	if (config.auth.default_url_when_signedIn)
 		default_url_when_signedIn = config.auth.default_url_when_signedIn;
@@ -203,6 +212,14 @@ exports.addRoutes = function(app){
 	app.get('/account', this.requireLevel1, this.account);
 	app.post('/account', this.requireLevel1, this.accountValidations, this.update);
 	
+	// Request contact
+	app.get('/contact', this.requireLevel0, function(req, res){
+		console.log('contact page')		
+		res.render(template_contact);
+	});
+	app.post('/contact', this.contactValidations, this.sendContactEmail);
+	
+	
 	// Sign out
 	app.get('/logout', this.logout);
 
@@ -219,10 +236,11 @@ exports.addRoutes = function(app){
 
 
 	if (DEBUGGING) {
-		console.log('\n\n\n\n');
-		console.log('WARNING: The /users URL is activated, and poses a security risk.');
-		console.log('         Set DEBUGGING to false to de-activate.')
-		console.log('\n\n\n');
+		console.log('\n\n');
+		console.log('WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING');
+		console.log('  The /users URL is activated, and poses a security risk. If this is a public');
+		console.log('  facing website set DEBUGGING to false in config.js to de-activate this page.')
+		console.log('\n\n');
 
 		app.get('/users', this.requireLevel1, this.listUsers); // for illustrative purposes only
 	}
@@ -510,6 +528,121 @@ exports.registrationValidations = function(req, res, next) {
 	// All validations passed.
 	next();
 }
+
+	
+exports.contactValidations = function(req, res, next){
+	//console.log('contactValidations: ', req.body);
+
+	// We'll use email address as the username
+	//	  req.assert('username', 'Username is required.').notEmpty();
+	req.body.username = req.body.email;
+
+	// Check email and password are provided
+	req.assert('name', 'You must provide a name.').notEmpty();
+	req.assert('email', 'You must provide an email address.').notEmpty();
+	req.assert('email', 'Your email address must be valid.').isEmail();
+	req.assert('text', 'You must enter a message.').notEmpty();
+
+	// If there were errors, stay on the registration page.
+	var validationErrors = req.validationErrors() || [];
+	if (validationErrors.length > 0) {
+
+		validationErrors.forEach(function(e) {
+			req.flash('error', e.msg);
+		});
+
+		// Stay on the contact page
+		return res.render(template_contact, {
+			details: {
+				name: req.body.name,
+				email: req.body.email,
+				subject: req.body.email,
+				text: req.body.text
+			},
+			errorMessages: req.flash('error')
+		});
+	}
+
+	// All validations passed.
+	next();
+};
+
+	
+exports.sendContactEmail = function(req, res, next){
+	//console.log('sendContactEmail: ', req.body);
+	var host = req.headers.host;
+	
+	// Get time strings
+	var a = new time.Date();
+	var zone1 = 'Asia/Manila';
+	a.setTimezone(zone1);
+	var time1 = a.toString();
+
+	var zone2 = 'Australia/Sydney';
+	a.setTimezone(zone2);
+	var time2 = a.toString();
+	
+	// Get the client's IP address
+	var ipAddr = req.headers["x-forwarded-for"];
+	if (ipAddr){
+		var list = ipAddr.split(",");
+		ipAddr = list[list.length-1];
+	} else {
+		ipAddr = req.connection.remoteAddress;
+	}
+	var ipAddr = "207.97.227.239"; // For testing only
+
+	// Get the location
+	var geo = geoip.lookup(ipAddr);
+	if (!geo) {
+		geo = {
+			country: 'unknown',
+			region: 'unknown',
+			city: 'unknown'
+		};
+	}
+	//console.log(geo);
+	
+	
+	// Parameters for Mandrill
+	var options = {
+		from_email: req.body.email,
+		from_name : 'Web Server - Contact Us - ' + host,
+		to: 'philcal@mac.com',
+		subject: 'Contact from ' + host,
+		"important": true,
+	    "headers": {
+	        "Reply-To": req.body.email
+	    },
+		
+		// Form related variables
+		details: {
+			host: host,
+			
+			zone1: zone1,
+			time1: time1,
+			zone2: zone2,
+			time2: time2,
+				
+			ipAddr: ipAddr,
+			country: geo.country,
+			region: geo.region,
+			city: geo.city,
+				
+			name: req.body.name,
+			email: req.body.email,
+			subject: req.body.subject,
+			text: req.body.text
+		}
+	};
+
+	res.mailer.send(template_mailer_contact, options, function(err) {
+		if(err) return next(err);
+		// Sent email
+		res.render(template_contactThanks);	
+	});
+};
+
 
 // Validations for user objects upon user update or create
 exports.accountValidations = function(req, res, next) {
