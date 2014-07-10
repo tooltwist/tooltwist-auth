@@ -11,6 +11,7 @@ var mongoose = require('mongoose')
 	, LocalStrategy = require('passport-local').Strategy
 	, geoip = require('geoip-lite')
 	, time = require('time')
+	, util = require('util') // used to get memory usage
 ;
 
 var DEBUGGING = true;
@@ -25,8 +26,11 @@ var template_request_password_reset = 'tooltwist-auth/request_password_reset';
 var template_password_reset = 'tooltwist-auth/password_reset';
 var template_error_500 = 'tooltwist-auth/error_500'
 var template_contact = 'tooltwist-auth/contact'
-var template_mailer_contact = 'tooltwist-auth/mailer-contact'
 var template_contactThanks = 'tooltwist-auth/contactThanks'
+
+var template_mailer_contact = 'tooltwist-auth/mailer-contact'
+var template_mailer_email_verify = 'tooltwist-auth/mailer-email_verify'
+var template_mailer_password_reset = 'tooltwist-auth/mailer-password_reset'
 
 var default_url_when_signedIn = '/dashboard';
 
@@ -52,6 +56,8 @@ exports.initialize = function(dir, express, app, config) {
 		template_login = config.auth.templates.login;
 	if (config.auth.templates.register)
 		template_register = config.auth.templates.register;
+	if (config.auth.templates.mailer_email_verify)
+		template_mailer_email_verify = config.auth.templates.mailer_email_verify;
 	if (config.auth.templates.account)
 		template_account = config.auth.templates.account;
 	if (config.auth.templates.request_password_reset)
@@ -64,6 +70,14 @@ exports.initialize = function(dir, express, app, config) {
 		template_contact = config.auth.templates.contact;
 	if (config.auth.templates.contactThanks)
 		template_contactThanks = config.auth.templates.contactThanks;
+	
+	// Mailer templates
+	if (config.auth.templates.mailer_contact)
+		template_mailer_contact = config.auth.templates.mailer_contact;
+	if (config.auth.templates.mailer_email_verify)
+		template_mailer_email_verify = config.auth.templates.mailer_email_verify;
+	if (config.auth.templates.mailer_password_reset)
+		template_mailer_password_reset = config.auth.templates.mailer_password_reset;	
 
 	// Allow override of the url used for the home page, when signed in.
 	if (config.auth.default_url_when_signedIn)
@@ -191,30 +205,33 @@ exports.addRoutes = function(app){
 	app.get('/login', this.requireLevel0,function(req, res){
 	  res.render(template_login, { postAuthDestination : req.query.postAuthDestination || "" });
 	});
+	app.post('/login', this.requireLevel0, this.authenticate);
 	
+	// Register a new user
+	app.get('/register', this.requireLevel0, this.register);
+	app.post('/register', this.requireLevel0, this.registrationValidations, this.createUser);
+	//app.get('/email_verify', this.requireLevel0, this.email_verify);
+	app.get('/email_verify', this.email_verify);
+
 	// Request password reset
 	app.get('/request_password_reset', this.requireLevel0, function(req, res){
 		//console.log('Requesting Password Reset')		
 		res.render(template_request_password_reset);
 	});
 	app.post('/request_password_reset', this.requireLevel0, this.generate_password_reset);
-	
-	// Reply from the email
+	// Reply from request password  email
 	app.get('/password_reset', this.requireLevel0, this.password_reset);
 	app.post('/password_reset', this.requireLevel0, this.process_password_reset);
-	
-	//app.get('/email_verify', this.requireLevel0, this.email_verify);
-	app.get('/email_verify', this.email_verify);
 	//app.post('/password_verify', this.requireLevel0, this.process_password_verify);
-	app.post('/login', this.requireLevel0, this.authenticate);
-	app.get('/register', this.requireLevel0, this.register);
-	app.post('/register', this.requireLevel0, this.registrationValidations, this.create);
+	
+
+	// Account details page
 	app.get('/account', this.requireLevel1, this.account);
 	app.post('/account', this.requireLevel1, this.accountValidations, this.update);
 	
-	// Request contact
-	app.get('/contact', this.requireLevel0, function(req, res){
-		console.log('contact page')		
+	// Request contact form
+	app.get('/contact', function(req, res){
+		//console.log('contact page')		
 		res.render(template_contact);
 	});
 	app.post('/contact', this.contactValidations, this.sendContactEmail);
@@ -222,6 +239,11 @@ exports.addRoutes = function(app){
 	
 	// Sign out
 	app.get('/logout', this.logout);
+	
+	// Error testing page
+	app.get('/bomb', function(){
+		(null)();
+	});
 
 	// Example pages
 	app.get('/example/publicPage', function(req, res){
@@ -232,6 +254,24 @@ exports.addRoutes = function(app){
 	});
 	app.get('/example/aboutUs', function(req, res){
 		res.render('example/aboutUs');
+	});
+	
+	// Health check
+	app.get('/hc', function(req, res){
+		var reply = {
+			//nodeVersion: process.version,   <-- posible security risk
+			arch: process.arch,
+			platform: process.platform,
+			pid : process.pid,
+			title: process.title,
+			memory: util.inspect(process.memoryUsage()),
+			uptime: process.uptime()
+		};
+		console.log('\nHealthcheck:\n', reply, '\n');
+		
+		res.setHeader('Content-Type', 'application/json');
+	    res.end(JSON.stringify(reply));
+		return;
 	});
 
 
@@ -314,12 +354,12 @@ exports.requireLevel2 = function requireLevel2(req, res, next){
 	// Check we have all the required details
 	var allMissing = true;
 	var someMissing = false;
-	if (req.user.firstName === '') {
+	if (!req.user.firstName ||req.user.firstName === '') {
 		someMissing = true;
 	} else {
 		allMissing = false;
 	}
-	if (req.user.LastName === '') {
+	if (!req.user.lastName || req.user.lastName === '') {
 		someMissing = true;
 	} else {
 		allMissing = false;
@@ -440,16 +480,16 @@ console.log('REQUEST IS ', req.body)
 }
 
 // Create user
-exports.create = function(req, res, next){
-  var newUser = new User(req.body);
-  newUser.save(function(err, user){
+exports.createUser = function(req, res, next){
+	var newUser = new User(req.body);
+	newUser.save(function(err, user){
     
     // Uniqueness and save validations
     
     if (err && err.code == 11000){
-      var duplicatedAttribute = err.err.split("$")[1].split("_")[0];
-      req.flash('error', "That " + duplicatedAttribute + " is already in use.");
-      return res.render('welcome/index.ejs', {user : newUser, errorMessages: req.flash('error')});
+		var duplicatedAttribute = err.err.split("$")[1].split("_")[0];
+		req.flash('error', "That " + duplicatedAttribute + " is already in use.");
+		return res.render(template_home, {user : newUser, errorMessages: req.flash('error')});
     }
     if(err) return next(err);
 	
@@ -465,8 +505,9 @@ console.log('need to send verify email')
         if(err) return next(err);
 	
 console.log('token is ' + token)	
+console.log('tempalte=', template_mailer_email_verify)
 	
-	    res.mailer.send('mailer/password_verify', {
+	    res.mailer.send(template_mailer_email_verify, {
 	        to: user.email,
 	        subject: 'Please verify this contact email for your ToolTwist account.',
 	        username: user.username,
@@ -711,7 +752,7 @@ exports.generate_password_reset = function(req, res, next){
       }, function(err){
         if(err) return next(err);
         // Saved token to user, sending email instructions
-        res.mailer.send('mailer/password_reset', {
+        res.mailer.send(template_mailer_password_reset, {
             to: user.email,
             subject: 'Password Reset Request',
             username: user.username,
@@ -777,10 +818,9 @@ exports.process_password_reset = function(req, res, next){
 // Link on verification email was pressed.
 exports.email_verify = function(req, res, next) {
 
-	console.log("exports.email_verify: username=", req.body.username)
-	
-	console.log("req.body=", req.body)
-	console.log("req.query=", req.query)
+	//console.log("exports.email_verify: username=", req.body.username)
+	//console.log("req.body=", req.body)
+	//console.log("req.query=", req.query)
 	
 	
 	// Get the user record
@@ -828,6 +868,8 @@ exports.email_verify = function(req, res, next) {
 			user.set(req.body);
 console.log("user=", user)
 			user.validatedEmail = true;
+			user.apiKey = user.generateApiKey();
+console.log("APIKEY=" + user.apiKey);
 			user.save(function(err, user) {
 				if (err) return next(err);
 				// Password updated successfully, logging In

@@ -12,6 +12,7 @@ var UserSchema = new Schema({
   password : { type: String, required: true },
   resetPasswordToken : { type: String, required: false },
   resetPasswordTokenCreatedAt : { type: Date },
+  apiKey : { type: String, required: false },
   validatedEmail : { type: Boolean, required: false },
   validatedDetails : { type: Boolean, required: false },
   termsAccepted_v1 : { type: Boolean, required: false },
@@ -54,10 +55,18 @@ UserSchema.methods.generatePerishableToken = function(cb){
     if (err) return cb(err);
     // hash the token along with our new salt
     bcrypt.hash(preHash, salt, function(err, hash) {
-      if (err) cb(err);
-      else cb(null,hash);
+      if (err)
+		  cb(err);
+      else
+		  cb(null, hash);
     });
   });
+}
+
+
+UserSchema.methods.generateApiKey = function() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*36|0,v=c=='x'?r:r&0x3|0x8;return v.toString(36);});
+	//return 'xxxxxxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*36|0,v=c=='x'?r:r&0x3|0x8;return v.toString(36);});
 }
 
 module.exports = mongoose.model('User', UserSchema);
