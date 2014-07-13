@@ -145,6 +145,8 @@ exports.initialize = function(dir, express, app, config) {
 	  res.locals.successMessages = req.flash('success'); // make success messages available in all views
 	  app.locals.layoutPath = "../shared/layout";
 	  app.locals.layoutPathLogin = "../shared/layout-login";
+	  app.locals.useCDN = (_env !== 'development');
+	  app.locals.projectName = 'PROJECT_NAME';
 	  next();
 	});
 	

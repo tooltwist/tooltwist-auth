@@ -55,9 +55,11 @@ function newProject(name) {
 	mkdirp.sync(name + '/views/shared');
 	mkdirp.sync(name + '/views/tooltwist-auth');
 	mkdirp.sync(name + '/public');
+	mkdirp.sync(name + '/public/bootstrap-3.1.1');
 	mkdirp.sync(name + '/public/css');
 	mkdirp.sync(name + '/public/img');
 	mkdirp.sync(name + '/public/js');
+	mkdirp.sync(name + '/public/jquery-2.0.3');
 
 
 	function copy(from, to) {
@@ -86,6 +88,13 @@ function newProject(name) {
 	
 	// Javascript
 	copy("public/js/main.js", name + '/public/js/main.js');
+	
+	// Bootstrap
+	copy("public/bootstrap-3.1.1/bootstrap.min.css", name + '/public/bootstrap-3.1.1/bootstrap.min.css');
+	copy("public/bootstrap-3.1.1/bootstrap.min.js", name + '/public/bootstrap-3.1.1/bootstrap.min.js');
+
+	// jQuery
+	copy("public/jquery-2.0.3/jquery.min.js", name + '/public/jquery-2.0.3/jquery.min.js');
 	
 	// Images
 	copy("public/img/bg1.jpg", name + '/public/img/bg1.jpg');
@@ -161,6 +170,16 @@ function newProject(name) {
 	copy('config.js.example', name + '/config.js');
 }
 
+function usage() {
+	console.log('');
+	console.log('Usage:');
+	console.log('  ' + process.argv[1] + ' init <projectName>');
+	// console.log('Usage:');
+	// console.log('Usage:');
+	// console.log('Usage:');
+	console.log('');
+	process.exit(1);
+}
 
 // Here is the main function
 (function main() {
@@ -169,9 +188,10 @@ function newProject(name) {
 	//console.log('ops=', ops)
 	if (ops.args && ops.args[0] == 'init') {
 		//console.log('\nInitialise project ' + ops.args[1]);
+		if (ops.args.length != 2) usage();
 		var projectName = ops.args[1];
 		newProject(projectName);
-		console.log('Project ready.')
+		console.log('Project directory ' + projectName + ' has been created.')
 	}
 
 })(); // end of main()
